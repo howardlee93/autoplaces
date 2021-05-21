@@ -8,3 +8,19 @@ export type User = {
   id: number
   name: string
 }
+
+
+export type Result = {
+  lessonId: number
+  title: number 
+  keywords: Array<string>
+  tags: Array<any>
+  content: string
+  teacherNames: Array<string>
+  teacherUsernames: Array<string>
+  createdDate: string
+  createdBy: string
+  modifiedDate: string
+  modifiedBy: string 
+
+}
