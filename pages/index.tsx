@@ -1,12 +1,15 @@
-import Link from 'next/link'
 import {useRouter} from 'next/router';
 import Head from 'next/head';
-import Search from '../components/Search';
 
 import {useState} from 'react';
+// import { GetStaticProps } from 'next';
+
+import Suggestion from '../components/Suggestion';
 
 
-const IndexPage = ( ) => {
+
+const IndexPage = (props: any) => {
+  const {keywords} = props;
   const [searchTerm, setSearchTerm] = useState("");
 
   const router = useRouter();
@@ -36,8 +39,9 @@ const IndexPage = ( ) => {
 
   return(
     <div> 
+      <h1>Home</h1>
 
-      <h1>Home</h1> 
+      <p>{keywords}</p>
       <form>
       <input 
 
@@ -45,6 +49,13 @@ const IndexPage = ( ) => {
       onChange={handleChange}
       onKeyPress={(e)=>handleKeypress(e)}
       />
+      <p></p>
+      <Suggestion keywords={
+        ["java", "python","c++"]
+      }
+
+      />
+      <p></p>
       <button onClick={handleSubmit} type="submit">
           Submit
       </button>
@@ -61,8 +72,12 @@ export default IndexPage;
 
 //   const data = await res.json();
 
+//   // let keywords = data.data.items.keywords;
+
 //   return{
-//     props: data
+//     props: {
+//       // keywords
+//     }
 //   } 
 
 // }
