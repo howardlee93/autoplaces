@@ -3,13 +3,16 @@ import { GetServerSideProps } from 'next'
 import {useRouter} from 'next/router';
 
 import {useState} from 'react';
+import ReactPaginate from "react-paginate";
 
  
 const LessonRes = (props: any) => {
-  let {items} = props;  
+
+  
+  let {items, query} = props;  
   const router = useRouter();
 
-  const [searchTerm, setSearchTerm] = useState(router.query);
+  const [searchTerm, setSearchTerm] = useState(query);
 
 
   const handleChange = (e:any) => {
@@ -33,13 +36,22 @@ const LessonRes = (props: any) => {
     }
   }
 
+  const handlePagination = (page:any) => {
+    const path = router.pathname
+    const query = router.query
+    query.page = page.selected + 1
+    router.push({
+      pathname: path,
+      query: query,
+    })
+  }
 
   const mapRes = items.map( (item: any, i:number)=>(
-    <li key={i}>
+    <div key={i}>
       <h2>{item.title}</h2>
       <p>{item.content}</p>
 
-    </li>
+    </div>
   ))
 
    return(
@@ -61,6 +73,22 @@ const LessonRes = (props: any) => {
 
       {mapRes}
 
+      <ReactPaginate
+                previousLabel={'previous'}
+                nextLabel={'next'}
+                breakLabel={'...'}
+                breakClassName={'break-me'}
+                activeClassName={'active'}
+                containerClassName={'pagination'}
+                subContainerClassName={'pages pagination'}
+
+                initialPage={props.currentPage - 1}
+                pageCount={props.pageCount} //page count
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePagination}
+            />
+
    </div>
   )
 }
@@ -71,16 +99,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // the component.
 
   const {query} = context.query;
+  // const {page} = (context.query.page) || 1;
 
 
-  const res = await fetch(`http://iteachlti.com:3001/api/public/es/lessons?query=${query}&page=1&size=10`);
+  const res = await fetch(`http://iteachlti.com:3001/api/public/es/lessons?query=${query}&page=${1}&size=10`);
 
   const data = await res.json();
   let items = data.data.items;
 
   return{
     props: {
-      items
+      items,
+      query    
     }
   } 
 }

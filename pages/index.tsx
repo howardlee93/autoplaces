@@ -50,12 +50,13 @@ const IndexPage = (props: any) => {
       onKeyPress={(e)=>handleKeypress(e)}
       />
       <p></p>
-      <Suggestion keywords={
-        ["java", "python","c++"]
+      {/* <Suggestion keywords={
+        ["java", "python","c++", "programming", "windows", "unix", "os", "c", "california","history","mathematics",
+      "college"]
       }
 
       />
-      <p></p>
+      <p></p> */}
       <button onClick={handleSubmit} type="submit">
           Submit
       </button>
