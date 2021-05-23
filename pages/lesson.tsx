@@ -50,12 +50,6 @@ const LessonRes = (props: any) => {
       query: currentQuery,
     });
     
-    // router.push({
-    //   pathname: currentPath,
-    //   query: currentQuery,
-          
-    // })
-
   }
 
   const mapRes = items.map( (item: any, i:number)=>(
@@ -118,7 +112,7 @@ export const getServerSideProps: GetServerSideProps = async ( context ) => {
   const page =  context.query.page || "1" ;
 
 
-  const res = await fetch(`http://iteachlti.com:3001/api/public/es/lessons?query=${query}&page=${page}&size=${10}`);
+  const res = await fetch(`http://iteachlti.com:3001/api/public/es/lessons?query=${query}&page=${page}&size=${10}`); //&size=${20}
 
   const data = await res.json();
   let items = data.data.items;
