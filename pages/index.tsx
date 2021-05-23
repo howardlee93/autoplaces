@@ -3,8 +3,9 @@ import Head from 'next/head';
 
 import {useState} from 'react';
 // import { GetStaticProps } from 'next';
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 
-import Suggestion from '../components/Suggestion';
 
 
 
@@ -14,23 +15,23 @@ const IndexPage = (props: any) => {
 
   const router = useRouter();
 
-  const handleChange = (e:any) => {
-    setSearchTerm(e.target.value);
-    console.log(searchTerm);
+  // const handleChange = (value) => {
+  //   setSearchTerm(value);
+  //   console.log(searchTerm);
 
-  };
+  // }; 
 
-  const handleSubmit = (e:any) => {
+ 
+
+  const handleSubmit = (e:React.KeyboardEvent) => {
     e.preventDefault();
-    alert("you have searched for!");
 
-    router.push(`/lesson?query=${searchTerm}`);
 
-    // or you can send data to backend
+    router.push(`/lesson?query=${searchTerm}&page=1&size=${10}`);
+
   };
 
-  const handleKeypress = (e:any) => {
-      //it triggers by pressing the enter key
+  const handleKeypress = (e:React.KeyboardEvent) => {
 
     if (e.keyCode === 13) {
       handleSubmit(e);
@@ -38,25 +39,28 @@ const IndexPage = (props: any) => {
   }
 
   return(
-    <div> 
-      <h1>Home</h1>
+    <div className="container"> 
+      <h1>Search</h1>
 
-      <p>{keywords}</p>
       <form>
-      <input 
-
-      value={searchTerm}
-      onChange={handleChange}
-      onKeyPress={(e)=>handleKeypress(e)}
+      <Autocomplete
+      id="free-solo-demo"
+      freeSolo
+      options={["java", "python","c++", "programming", "windows", "unix", "os", "c", "california","history","mathematics",
+      "college"]} 
+      onChange={(event,value)=> setSearchTerm(value)}
+      onKeyPress={ handleKeypress}
+      renderInput={params => (
+        <TextField
+          {...params}
+          label="Search for lessons"
+          variant="outlined"
+          InputProps={{ ...params.InputProps, type: 'search' }}
+        />
+      )}
       />
-      <p></p>
-      {/* <Suggestion keywords={
-        ["java", "python","c++", "programming", "windows", "unix", "os", "c", "california","history","mathematics",
-      "college"]
-      }
-
-      />
-      <p></p> */}
+      
+      <p></p> 
       <button onClick={handleSubmit} type="submit">
           Submit
       </button>

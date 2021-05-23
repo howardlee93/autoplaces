@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { GetServerSideProps } from 'next'
 import {useRouter} from 'next/router';
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 
 import {useState} from 'react';
 import ReactPaginate from "react-paginate";
@@ -23,7 +25,7 @@ const LessonRes = (props: any) => {
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    alert("you have searched for!");
+    // alert("you have searched for!");
 
     router.push(`/lesson?query=${searchTerm}`);
 
@@ -37,13 +39,23 @@ const LessonRes = (props: any) => {
   }
 
   const handlePagination = (page:any) => {
-    const path = router.pathname
-    const query = router.query
-    query.page = page.selected + 1
+    const currentPath = router.pathname
+    const currentQuery = router.query
+    currentQuery.page  = page.selected + 1;
+
+    // router.push(`/lesson?query=${searchTerm}&page=${currentQuery.page}&size=${20}`);
+
     router.push({
-      pathname: path,
-      query: query,
-    })
+      pathname: currentPath,
+      query: currentQuery,
+    });
+    
+    // router.push({
+    //   pathname: currentPath,
+    //   query: currentQuery,
+          
+    // })
+
   }
 
   const mapRes = items.map( (item: any, i:number)=>(
@@ -55,9 +67,12 @@ const LessonRes = (props: any) => {
   ))
 
    return(
-   <div>
+   <div className="container">
      <h1> Search results</h1>
-
+     <Link href="/">
+          <a>Home</a>
+      </Link>
+      <p></p>
      <form>
       <input 
 
@@ -93,16 +108,17 @@ const LessonRes = (props: any) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async ( context ) => {
   // Example for including static props in a Next.js function component page.
   // Don't forget to include the respective types for any props passed into
   // the component.
 
   const {query} = context.query;
-  // const {page} = (context.query.page) || 1;
+
+  const page =  context.query.page || "1" ;
 
 
-  const res = await fetch(`http://iteachlti.com:3001/api/public/es/lessons?query=${query}&page=${1}&size=10`);
+  const res = await fetch(`http://iteachlti.com:3001/api/public/es/lessons?query=${query}&page=${page}&size=${10}`);
 
   const data = await res.json();
   let items = data.data.items;
@@ -110,7 +126,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return{
     props: {
       items,
-      query    
+      query  
     }
   } 
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import {useRouter} from 'next/router';
 
-const Search = () => {
+const Search = (props) => {
     const [searchTerm, updateSearchTerm] = useState('');
     const [filteredResults, updateFilteredResults] = useState([]);
     const [searchResults, updateSearchResults] = useState([]);
@@ -13,16 +14,8 @@ const Search = () => {
         DOWN: 40
     };
 
-    useEffect(() => {
-        const getSearchResults = async () => {
-            // ⚠️ This is where you should pull data in from your server
-            const searchResultsResponse = await getSearchResults();
+    const router = useRouter();
 
-            updateSearchResults(searchResultsResponse);
-        };
-       
-        getSearchResults();
-    }, []);
 
     const updateSearch = e => {
         updateSearchTerm(e.target.value);
@@ -52,6 +45,9 @@ const Search = () => {
                 }
 
                 hideAutoSuggest(e);
+                alert("you have searched!");
+
+                router.push(`/lesson?query=${searchTerm}`);
             break;
             case keys.UP:
 
