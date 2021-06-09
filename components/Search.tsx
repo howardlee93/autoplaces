@@ -1,74 +1,74 @@
-
+import React, { useState } from "react";
+import  {Autocomplete, createFilterOptions } from '@material-ui/lab';
+import {TextField} from '@material-ui/core';
+import axios from 'axios';
 import {useRouter} from 'next/router';
-import Head from 'next/head';
 
-import {useState} from 'react';
-
-const Seearch = () =>{
+import {autoURL} from '../constants/constants';
 
 
-    const keys = {
-        ENTER: 13,
-        UP: 38,
-        DOWN: 40
-    };
-    const [searchTerm, setSearchTerm] = useState("");
+interface OptionType {
+  suggestion: string;
+  count: number;
+}
 
-    const [filteredResults, updateFilteredResults] = useState([]);
+const Search = ()=>{
+
+  const router = useRouter();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
 
-    const router = useRouter();
-  
-    const handleChange = (e:any) => {
-      setSearchTerm(e.target.value);
-      console.log(searchTerm);
-  
-    };
-  
-    const handleSubmit = (e:any) => {
-      e.preventDefault();
-      alert("you have searched for!");
-  
-      router.push(`/lesson?query=${searchTerm}`);
-  
-      // or you can send data to backend
-    };
-  
-    const handleKeypress = (e:any) => {
-        //it triggers by pressing the enter key
-  
-      if (e.keyCode === 13) {
-        handleSubmit(e);
-      }
-    }
-  
-    return(
-      <div> 
-        <h1>Home</h1>
-  
-        <p>{keywords}</p>
-        <form>
-        <input 
-  
-        value={searchTerm}
-        onChange={handleChange}
-        onKeyPress={(e)=>handleKeypress(e)}
-        />
-        <p></p>
-        <Suggestion keywords={
-          ["java", "python","c++", "programming", "windows", "unix", "os", "c", "california","history","mathematics",
-        "college"]
-        }
-  
-        />
-        <p></p>
-        <button onClick={handleSubmit} type="submit">
-            Submit
-        </button>
-        </form>
-      </div>
-      
-    )
+  const handleChange = (e: any, value:any ) =>{
+    setSearchTerm(value);
+
+
+    axios.get(autoURL+`${e.currentTarget.value}`)
+
+    .then( res => ( setSuggestions((res.data.data.items) 
+    )));
+
   }
 
-}
+
+  const handleKeyUp = async (e:any) =>{
+    if (e.keyCode == 13){
+
+    // await setSearchTerm(e.currentTarget.value)
+    router.push(`/result?query=${searchTerm}`)
+      
+    }
+  }
+
+  const filterOptions = createFilterOptions({
+    matchFrom: 'start',
+    stringify: (option: OptionType) => option.suggestion,
+  });
+
+  return(
+
+    <Autocomplete
+      id="free-solo-demo"
+      freeSolo
+      options={suggestions}
+      filterOptions={filterOptions}
+      getOptionLabel={(suggestions) => suggestions.suggestion ? suggestions.suggestion :" "}
+      onInputChange={handleChange}
+      onKeyUp={ handleKeyUp}
+      renderInput={params => (
+        <TextField
+          {...params}
+          label="search"
+          margin="normal"
+          variant="outlined"
+        />
+      )}
+    />
+
+  )
+};
+
+
+export default Search;
+

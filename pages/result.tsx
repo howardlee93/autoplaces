@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { GetServerSideProps } from 'next'
 import {useRouter} from 'next/router';
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
+import Search from '../components/Search';
+import {searchPlacesURL} from '../constants/constants';
+
+
 
 import {useState} from 'react';
 import ReactPaginate from "react-paginate";
@@ -15,35 +17,15 @@ const LessonRes = (props: any) => {
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState(query);
+  const [currentPage, setCurrentPage] = useState(0);
 
-
-  const handleChange = (e:any) => {
-    setSearchTerm(e.target.value);
-    console.log(searchTerm);
-
-  };
-
-  const handleSubmit = (e:any) => {
-    e.preventDefault();
-    // alert("you have searched for!");
-
-    router.push(`/lesson?query=${searchTerm}`);
-
-  };
-
-  const handleKeypress = (e:any) => {
-
-    if (e.keyCode === 13) {
-      handleSubmit(e);
-    }
-  }
 
   const handlePagination = (page:any) => {
+    setCurrentPage(page);
+
     const currentPath = router.pathname
     const currentQuery = router.query
     currentQuery.page  = page.selected + 1;
-
-    // router.push(`/lesson?query=${searchTerm}&page=${currentQuery.page}&size=${20}`);
 
     router.push({
       pathname: currentPath,
@@ -52,10 +34,24 @@ const LessonRes = (props: any) => {
     
   }
 
+  const PER_PAGE = 10;
+
+  // const offset = currentPage * PER_PAGE;
+
+  // const currentPageData = data
+  //   .slice(offset, offset + PER_PAGE)
+  //   .map(({ thumburl }) => <img src={thumburl} />);
+
+  // const pageCount = Math.ceil(data.length / PER_PAGE);
+
+
   const mapRes = items.map( (item: any, i:number)=>(
     <div key={i}>
       <h2>{item.title}</h2>
+      <p>Teacher:{item.teacherNames}</p>
+
       <p>{item.content}</p>
+      <p>Keywords: {item.keywords}</p>
 
     </div>
   ))
@@ -67,24 +63,15 @@ const LessonRes = (props: any) => {
           <a>Home</a>
       </Link>
       <p></p>
-     <form>
-      <input 
-
-      value={searchTerm}
-      onChange={handleChange}
-      onKeyPress={(e)=>handleKeypress(e)}
-      />
-      <button onClick={handleSubmit} type="submit">
-          Submit
-      </button>
-      </form>
+     
+     <Search/>
 
 
       {mapRes}
 
       <ReactPaginate
-                previousLabel={'previous'}
-                nextLabel={'next'}
+                previousLabel={'<'}
+                nextLabel={'>'}
                 breakLabel={'...'}
                 breakClassName={'break-me'}
                 activeClassName={'active'}
@@ -112,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = async ( context ) => {
   const page =  context.query.page || "1" ;
 
 
-  const res = await fetch(`http://iteachlti.com:3001/api/public/es/lessons?query=${query}&page=${page}&size=${10}`); //&size=${20}
+  const res = await fetch(searchPlacesURL+`input=${query}&page=${page}&size=${10}`); //&size=${20}
 
   const data = await res.json();
   let items = data.data.items;
