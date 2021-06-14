@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import  {Autocomplete, createFilterOptions } from '@material-ui/lab';
 import {TextField} from '@material-ui/core';
-import axios from 'axios';
 import {useRouter} from 'next/router';
 
-import {getPlaces} from '../utils/api_util';
 
 
 interface OptionType {
-  suggestion: string;
-  count: number;
+  id: string,
+  name: string,
+  height: string,
+  mass: string,
+  hair_color: string,
+  skin_color: string,
+  eye_color: string,
+  gender: string,
 }
 
-const Search = ()=>{
+const Search = ({people})=>{
 
   const router = useRouter();
 
@@ -23,11 +27,6 @@ const Search = ()=>{
   const handleChange = (e: any, value:any ) =>{
     setSearchTerm(value);
 
-
-    getPlaces(`${e.currentTarget.value}`)
-
-    .then( res => ( setSuggestions((res.data.data.items) 
-    )));
 
   }
 
@@ -43,7 +42,7 @@ const Search = ()=>{
 
   const filterOptions = createFilterOptions({
     matchFrom: 'start',
-    stringify: (option: OptionType) => option.suggestion,
+    stringify: (option: OptionType) => option.name,
   });
 
   return(
@@ -51,7 +50,7 @@ const Search = ()=>{
     <Autocomplete
       id="free-solo-demo"
       freeSolo
-      options={suggestions}
+      options={people}
       filterOptions={filterOptions}
       getOptionLabel={(suggestions) => suggestions.suggestion ? suggestions.suggestion :" "}
       onInputChange={handleChange}
