@@ -18,6 +18,8 @@ interface OptionType {
 
 const Search = ({people})=>{
 
+  // const people ={ people }
+
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,6 +28,7 @@ const Search = ({people})=>{
 
   const handleChange = (e: any, value:any ) =>{
     setSearchTerm(value);
+    setSuggestions(e.currentTarget.value)
 
 
   }
@@ -52,7 +55,7 @@ const Search = ({people})=>{
       freeSolo
       options={people}
       filterOptions={filterOptions}
-      getOptionLabel={(suggestions) => suggestions.suggestion ? suggestions.suggestion :" "}
+      getOptionLabel={(people) => people.name ? people.name :" "}
       onInputChange={handleChange}
       onKeyUp={ handleKeyUp}
       renderInput={params => (

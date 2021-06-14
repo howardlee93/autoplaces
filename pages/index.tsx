@@ -20,7 +20,7 @@ const IndexPage = () => {
     <div className="container"> 
 
       <h1>Search</h1>
-    <Search names={people}/>
+    <Search people={people}/>
     </div>
     </div>
 
