@@ -4,7 +4,7 @@ import {TextField} from '@material-ui/core';
 import axios from 'axios';
 import {useRouter} from 'next/router';
 
-import {autoURL} from '../constants/constants';
+import {getPlaces} from '../utils/api_util';
 
 
 interface OptionType {
@@ -24,7 +24,7 @@ const Search = ()=>{
     setSearchTerm(value);
 
 
-    axios.get(autoURL+`${e.currentTarget.value}`)
+    getPlaces(`${e.currentTarget.value}`)
 
     .then( res => ( setSuggestions((res.data.data.items) 
     )));
