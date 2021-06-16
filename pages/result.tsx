@@ -6,7 +6,7 @@ import { Layout } from '../components/Layout';
 
 
 import {useState} from 'react';
-import ReactPaginate from "react-paginate";
+// import ReactPaginate  "react-paginate";
 
  
 const LessonRes = (props: any) => {
@@ -19,19 +19,19 @@ const LessonRes = (props: any) => {
   const [currentPage, setCurrentPage] = useState(0);
 
 
-  const handlePagination = (page:any) => {
-    setCurrentPage(page);
+  // const handlePagination = (page:any) => {
+  //   setCurrentPage(page);
 
-    const currentPath = router.pathname
-    const currentQuery = router.query
-    currentQuery.page  = page.selected + 1;
+  //   const currentPath = router.pathname
+  //   const currentQuery = router.query
+  //   currentQuery.page  = page.selected + 1;
 
-    router.push({
-      pathname: currentPath,
-      query: currentQuery,
-    });
+  //   router.push({
+  //     pathname: currentPath,
+  //     query: currentQuery,
+  //   });
     
-  }
+  // }
 
   const PER_PAGE = 10;
 
@@ -56,7 +56,7 @@ const LessonRes = (props: any) => {
 
       {mapRes}
 
-      <ReactPaginate
+      {/* <ReactPaginate
                 previousLabel={'<'}
                 nextLabel={'>'}
                 breakLabel={'...'}
@@ -70,7 +70,7 @@ const LessonRes = (props: any) => {
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={handlePagination}
-            />
+            /> */}
 
    </div>
   )
