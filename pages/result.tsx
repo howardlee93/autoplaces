@@ -2,8 +2,7 @@ import Link from 'next/link';
 import { GetServerSideProps } from 'next'
 import {useRouter} from 'next/router';
 import Search from '../components/Search';
-import {searchPlacesURL} from '../constants/constants';
-
+import { Layout } from '../components/Layout';
 
 
 import {useState} from 'react';
@@ -13,7 +12,7 @@ import ReactPaginate from "react-paginate";
 const LessonRes = (props: any) => {
 
   
-  let {items, query} = props;  
+  let {people, query} = props;  
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState(query);
@@ -36,22 +35,10 @@ const LessonRes = (props: any) => {
 
   const PER_PAGE = 10;
 
-  // const offset = currentPage * PER_PAGE;
-
-  // const currentPageData = data
-  //   .slice(offset, offset + PER_PAGE)
-  //   .map(({ thumburl }) => <img src={thumburl} />);
-
-  // const pageCount = Math.ceil(data.length / PER_PAGE);
-
-
-  const mapRes = items.map( (item: any, i:number)=>(
+  const mapRes = people.map( (person: any, i:number)=>(
     <div key={i}>
-      <h2>{item.title}</h2>
-      <p>Teacher:{item.teacherNames}</p>
-
-      <p>{item.content}</p>
-      <p>Keywords: {item.keywords}</p>
+      <h2>{person.name}</h2>
+    
 
     </div>
   ))
@@ -64,7 +51,7 @@ const LessonRes = (props: any) => {
       </Link>
       <p></p>
      
-     <Search/>
+     <Search people={people}/>
 
 
       {mapRes}
@@ -89,28 +76,28 @@ const LessonRes = (props: any) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ( context ) => {
+// export const getServerSideProps: GetServerSideProps = async ( context ) => {
   // Example for including static props in a Next.js function component page.
   // Don't forget to include the respective types for any props passed into
-  // the component.
+//   // the component.
 
-  const {query} = context.query;
+//   const {query} = context.query;
 
-  const page =  context.query.page || "1" ;
+//   const page =  context.query.page || "1" ;
 
 
-  const res = await fetch(searchPlacesURL+`input=${query}&page=${page}&size=${10}`); //&size=${20}
+//   const res = await fetch(searchPlacesURL+`input=${query}&page=${page}&size=${10}`); //&size=${20}
 
-  const data = await res.json();
-  let items = data.data.items;
+//   const data = await res.json();
+//   let items = data.data.items;
 
-  return{
-    props: {
-      items,
-      query  
-    }
-  } 
-}
+//   return{
+//     props: {
+//       items,
+//       query  
+//     }
+//   } 
+// }
 
 
 export default LessonRes;

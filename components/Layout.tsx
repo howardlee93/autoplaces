@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Layout = () =>{
+const Layout = ({results}) =>{
 
 
 

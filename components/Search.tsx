@@ -37,8 +37,11 @@ const Search = ({people})=>{
   const handleKeyUp = async (e:any) =>{
     if (e.keyCode == 13){
 
-    // await setSearchTerm(e.currentTarget.value)
-    router.push(`/result?query=${searchTerm}`)
+
+      console.log(suggestions);
+      
+    // // await setSearchTerm(e.currentTarget.value)
+    // router.push(`/result?query=${searchTerm}`)
       
     }
   }
