@@ -2,46 +2,17 @@ import Link from 'next/link';
 import { GetServerSideProps } from 'next'
 import {useRouter} from 'next/router';
 import Search from '../components/Search';
-import { Layout } from '../components/Layout';
 
 
 import {useState} from 'react';
-// import ReactPaginate  "react-paginate";
 
  
 const LessonRes = (props: any) => {
 
   
-  let {data} = props;  
-  const router = useRouter();
-
-  const [searchTerm, setSearchTerm] = useState(data);
-  const [currentPage, setCurrentPage] = useState(0);
-
-
-  // const handlePagination = (page:any) => {
-  //   setCurrentPage(page);
-
-  //   const currentPath = router.pathname
-  //   const currentQuery = router.query
-  //   currentQuery.page  = page.selected + 1;
-
-  //   router.push({
-  //     pathname: currentPath,
-  //     query: currentQuery,
-  //   });
-    
-  // }
-
-  const PER_PAGE = 10;
-
-  const mapRes = data.map( (elem: any, i:number)=>(
-    <div key={i}>
-      <h2>{person.name}</h2>
-    
-
-    </div>
-  ))
+  let {results} = props;  
+  let searchRes = results[0]
+  
 
    return(
    <div className="container">
@@ -54,48 +25,26 @@ const LessonRes = (props: any) => {
      {/* <Search people={people}/> */}
 
 
-      {mapRes}
+      <h1>{searchRes.name}</h1>
 
-      {/* <ReactPaginate
-                previousLabel={'<'}
-                nextLabel={'>'}
-                breakLabel={'...'}
-                breakClassName={'break-me'}
-                activeClassName={'active'}
-                containerClassName={'pagination'}
-                subContainerClassName={'pages pagination'}
 
-                initialPage={props.currentPage - 1}
-                pageCount={props.pageCount} //page count
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={handlePagination}
-            /> */}
 
    </div>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ( context ) => {
-  // Example for including static props in a Next.js function component page.
-  // Don't forget to include the respective types for any props passed into
-  // // the component.
 
   const {query} = context.query;
 
-  // const searchterm = query.
-
-  // const page =  context.query.page || "1" ;
-
-
-  const res = await fetch('https://swapi.dev/api/people/?search=${query'); //&size=${20}
+  const res = await fetch(`https://swapi.dev/api/people/?search=${query}`); 
 
   const data = await res.json();
-  // let items = data.data.items;
+  let results = data.results;
 
   return{
     props: {
-      data  
+      results  
     }
   } 
 }

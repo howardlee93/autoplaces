@@ -41,7 +41,6 @@ const Search = ({people})=>{
     console.log(searchTerm);
       
     // await setSearchTerm(e.currentTarget.value)
-
     
     router.push(`/result?query=${searchTerm}`)
       
