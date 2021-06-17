@@ -76,28 +76,28 @@ const LessonRes = (props: any) => {
   )
 }
 
-// export const getServerSideProps: GetServerSideProps = async ( context ) => {
+export const getServerSideProps: GetServerSideProps = async ( context ) => {
   // Example for including static props in a Next.js function component page.
   // Don't forget to include the respective types for any props passed into
-//   // the component.
+  // // the component.
 
-//   const {query} = context.query;
+  const {query} = context.query;
 
-//   const page =  context.query.page || "1" ;
+  const page =  context.query.page || "1" ;
 
 
-//   const res = await fetch(searchPlacesURL+`input=${query}&page=${page}&size=${10}`); //&size=${20}
+  const res = await fetch('https://swapi.dev/api/people/?search=${query'); //&size=${20}
 
-//   const data = await res.json();
-//   let items = data.data.items;
+  const data = await res.json();
+  let items = data.data.items;
 
-//   return{
-//     props: {
-//       items,
-//       query  
-//     }
-//   } 
-// }
+  return{
+    props: {
+      items,
+      query  
+    }
+  } 
+}
 
 
 export default LessonRes;
