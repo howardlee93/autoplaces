@@ -43,7 +43,7 @@ const Search = ({people})=>{
     // await setSearchTerm(e.currentTarget.value)
 
     
-    // router.push(`/result?query=${searchTerm}`)
+    router.push(`/result?query=${searchTerm}`)
       
     }
   }

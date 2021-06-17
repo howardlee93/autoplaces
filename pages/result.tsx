@@ -12,10 +12,10 @@ import {useState} from 'react';
 const LessonRes = (props: any) => {
 
   
-  let {people, query} = props;  
+  let {data} = props;  
   const router = useRouter();
 
-  const [searchTerm, setSearchTerm] = useState(query);
+  const [searchTerm, setSearchTerm] = useState(data);
   const [currentPage, setCurrentPage] = useState(0);
 
 
@@ -35,7 +35,7 @@ const LessonRes = (props: any) => {
 
   const PER_PAGE = 10;
 
-  const mapRes = people.map( (person: any, i:number)=>(
+  const mapRes = data.map( (elem: any, i:number)=>(
     <div key={i}>
       <h2>{person.name}</h2>
     
@@ -51,7 +51,7 @@ const LessonRes = (props: any) => {
       </Link>
       <p></p>
      
-     <Search people={people}/>
+     {/* <Search people={people}/> */}
 
 
       {mapRes}
@@ -83,18 +83,19 @@ export const getServerSideProps: GetServerSideProps = async ( context ) => {
 
   const {query} = context.query;
 
-  const page =  context.query.page || "1" ;
+  // const searchterm = query.
+
+  // const page =  context.query.page || "1" ;
 
 
   const res = await fetch('https://swapi.dev/api/people/?search=${query'); //&size=${20}
 
   const data = await res.json();
-  let items = data.data.items;
+  // let items = data.data.items;
 
   return{
     props: {
-      items,
-      query  
+      data  
     }
   } 
 }
